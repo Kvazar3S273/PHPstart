@@ -4,5 +4,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     $sql = "DELETE FROM `news` WHERE `Id` = ?";
     $dbh->prepare($sql)->execute([$_POST['id']]);
     echo "id = ".$_POST['id'];
+    header("Location: /");
+    exit();
 }
 ?>

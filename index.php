@@ -54,7 +54,7 @@
 <script src="/js/axios.min.js"></script>
 
 <script>
-    var myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
+    const myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
     window.addEventListener('load', function () {
         const list = document.querySelectorAll(".btnDelete");
         let removeId=0; //id element delete
