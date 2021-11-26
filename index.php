@@ -20,11 +20,12 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">id</th>
+            <th scope="col">№</th>
             <th scope="col">Назва</th>
             <th scope="col">Опис</th>
             <th scope="col">Фото</th>
-            <th scope="col">Action</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -40,7 +41,9 @@
             </td>
             <td>
                 <a href='#' class='btn btn-danger btnDelete' data-id='{$row['id']}'>Видалити</a>
-                <a href='#' class='btn btn-success btnEdit' data-id='{$row['id']}'>Редагувати</a>
+            </td>
+            <td>
+                <a href='edit.php?id=${row["id"]}' class='btn btn-success btnEdit' data-id='{$row['id']}'>Редагувати</a>
             </td>
         </tr>";
         }
@@ -57,7 +60,7 @@
     const myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
     window.addEventListener('load', function () {
         const list = document.querySelectorAll(".btnDelete");
-        let removeId=0; //id element delete
+        let removeId = 0; //id element delete
         for (let i = 0; i < list.length; i++) {
             list[i].addEventListener("click", function (e) {
                 e.preventDefault();
@@ -66,9 +69,10 @@
             });
         }
         //Нажали кнопку видалити
-        document.querySelector("#btnDeleteNews").addEventListener("click", function() {
+        document.querySelector("#btnDeleteNews").addEventListener("click", function () {
             const formData = new FormData();
-            formData.append("id", removeId);
+
+            ("id", removeId);
             axios.post("/delete.php", formData)
                 .then(resp => {
                     location.reload();
@@ -76,6 +80,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>
