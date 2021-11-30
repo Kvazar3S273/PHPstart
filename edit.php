@@ -27,8 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <div class="offset-2 col-md-8 mt-2">
             <h1 class="text-center">Редагування новин</h1>
             <form method="post" enctype="multipart/form-data">
-                <input class="d-none" type="text" id="id" name="id" value=<?= $id ?>/>
-                <input class="d-none" type="text" id="beforeImage" name="beforeImage" value=<?= $imageBefore ?>/>
+                <?php
+                echo "
+                
+                <input class='d-none' type='text' id='id' name='id' value={ $id }/>
+                <input class='d-none' type='text' id='beforeImage' name='beforeImage' value={ $imageBefore }/>
+                <input class='d-none' type='text' id='delImage' name='delImage' value={ $imageBefore }/>"
+                ?>
                 <div class="form-group mb-3">
                     <label class="form-label" for="name">Назва</label>
                     <?php
@@ -68,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         var description = document.getElementById("description");
         var image = document.getElementById("image");
         var beforeImage = document.getElementById("beforeImage");
+        var delImage=document.getElementById("delImage");
 
         const file = document.getElementById('image');
         file.addEventListener('change', function (e) {
@@ -83,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             formData.append('description', description.value);
             formData.append('image', image.files[0]);
             formData.append('beforeImage',beforeImage.value);
+            formData.append('delImage',delImage.value);
             axios.post("/editpost.php", formData,{
                 headers: {
                     "Content-Type": "multipart/form-data"

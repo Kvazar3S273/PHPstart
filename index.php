@@ -10,69 +10,90 @@
 </head>
 <body>
 <?php include "navbar.php"; ?>
+
 <div class="container">
     <h1>Список новин</h1>
     <?php
     include "connection_database.php";
+    include "modal_delete.php";
     $sql = "SELECT * FROM news";
     $reader = $dbh->query($sql);
     ?>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">№</th>
-            <th scope="col">Назва</th>
-            <th scope="col">Опис</th>
-            <th scope="col">Фото</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Edit</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($reader as $row) {
-            echo "
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">№</th>
+                        <th scope="col">Назва</th>
+                        <th scope="col">Опис</th>
+                        <th scope="col">Фото</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach ($reader as $row) {
+                        echo "
         <tr>
             <th>{$row['id']}</th>
             <td>{$row['name']}</td>
             <td>{$row['description']}</td>
             <td>
-                <img src='/images/{$row['image']}' alt='salo' width='100'/>
+                <img src='/images/{$row['image']}' alt='image' width='100'/>
             </td>
             <td>
-                <a href='#' class='btn btn-danger btnDelete' data-id='{$row['id']}'>Видалити</a>
+                <a href='#' class='btn btn-danger btnDelete' 
+                data-id='{$row['id']}' 
+                data-name='{$row['name']}' 
+                data-image='{$row['image']}' 
+                id='delete'
+                >Видалити</a>
             </td>
             <td>
-                <a href='edit.php?id=${row["id"]}' class='btn btn-success btnEdit' data-id='{$row['id']}'>Редагувати</a>
+                <a href='edit.php?id=${row["id"]}' 
+                class='btn btn-success btnEdit' 
+                >Редагувати</a>
             </td>
         </tr>";
-        }
-        ?>
-        </tbody>
-    </table>
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
-<?php include "modal_delete.php"; ?>
+<?php //include "modal_delete.php"; ?>
 
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/axios.min.js"></script>
 
 <script>
-    const myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
+    const mod = document.querySelector('#myModal');
+    const modal = new bootstrap.Modal(mod, {});
     window.addEventListener('load', function () {
         const list = document.querySelectorAll(".btnDelete");
         let removeId = 0; //id element delete
+        let path = '';
+        //let item = '';
         for (let i = 0; i < list.length; i++) {
             list[i].addEventListener("click", function (e) {
                 e.preventDefault();
                 removeId = e.currentTarget.dataset.id;
-                myModal.show();
-            });
+                //item = e.currentTarget.dataset.name;
+                path = e.currentTarget.dataset.image;
+                // mod.querySelector('.context').innerHTML = '<span>' + item + '</span>';
+                modal.show();
+            })
         }
         //Нажали кнопку видалити
         document.querySelector("#btnDeleteNews").addEventListener("click", function () {
             const formData = new FormData();
-
-            ("id", removeId);
+            formData.append("id", removeId);
             axios.post("/delete.php", formData)
                 .then(resp => {
                     location.reload();
